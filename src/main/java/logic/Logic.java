@@ -1,19 +1,19 @@
 package logic;
 
-import stats.GameStatsDto;
+import stats.GameStats;
 
 public class Logic {
 
 
-    public GameStatsDto play(Player[][] gameTable, Point point, Player player) {
+    public GameStats play(Player[][] gameTable, Point point, Player player) {
         boolean isMovePossible = moveIsPossible(gameTable, point);
         if (isMovePossible) {
             Player[][] changedTable = setMove(gameTable, point, player);
             Player winnerPlayer = checkWin(changedTable, player);
             Player changedPlayer = changePlayer(player);
-            return new GameStatsDto(changedPlayer, winnerPlayer, changedTable);
+            return new GameStats(changedPlayer, winnerPlayer, changedTable);
         } else {
-            return new GameStatsDto(player, Player.EMPTY, gameTable);
+            return new GameStats(player, Player.EMPTY, gameTable);
         }
     }
 
@@ -41,9 +41,11 @@ public class Logic {
 
 
     public Player changePlayer(Player player) {
-        if (player.equals(Player.x))
+        if (player.equals(Player.x)) {
             return Player.o;
-        else return Player.x;
+        } else {
+            return Player.x;
+        }
     }
 
     public Player checkHorizon(Player[][] board, Player player) {

@@ -1,46 +1,41 @@
 package controller;
 
 import logic.*;
-import stats.GameStatsDto;
+import stats.GameStats;
 import view.View;
 
 public class Controller {
     private Logic logic;
     private View view;
-    private Player activePlayer;
-    private Player[][] board;
-    private Player isWinner;
+    private GameStats gameStats;
 
     public Controller(View view) {
         this.logic = new Logic();
         this.view = view;
-        this.activePlayer = Player.x;
+        gameStats = new GameStats();
     }
 
     public void start() {
-        board = BoardOperator.startBoard();
+        gameStats.setGameTable(BoardOperator.startBoard());
 
     }
 
     public Player[][] click(Point point) {
-        GameStatsDto gameStatsDto = logic.play(board, point, activePlayer);
-        board = gameStatsDto.getGameTable();
-        activePlayer = gameStatsDto.getPlayer();
-        isWinner = gameStatsDto.getWinner();
+        gameStats = logic.play(gameStats.getGameTable(), point, gameStats.getPlayer());
         stop();
-        return board;
+        return gameStats.getGameTable();
     }
 
     public void stop() {
-        if (isWinner != Player.EMPTY) {
+        if (gameStats.getWinner() != Player.EMPTY) {
             view.stopTable();
-            board = BoardOperator.startBoard();
-            view.message("Winner is "+isWinner,"Oponent start next game");
+            start();
+            view.message("Winner is " + gameStats.getWinner(), "Opponent start next game");
         }
-        if (logic.isFull(board)) {
+        if (logic.isFull(gameStats.getGameTable())) {
             view.stopTable();
-            board = BoardOperator.startBoard();
-            view.message("Nobody has won",activePlayer+" start next game");
+            start();
+            view.message("Nobody has won", gameStats.getPlayer() + " start next game");
         }
     }
 }

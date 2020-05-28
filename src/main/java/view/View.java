@@ -19,25 +19,18 @@ import logic.Player;
 import logic.Point;
 
 public class View extends Application {
-    private Image oPage = new Image("O.png");
-    private Image xPage = new Image("X.png");
+    private final Image oPage = new Image("O.png");
+    private final Image xPage = new Image("X.png");
     ImagePattern imageX = new ImagePattern(xPage);
     ImagePattern imageO = new ImagePattern(oPage);
     AnchorPane panel;
     Controller controller;
-    private int centerOfRectangle = 50;
-    private final int constant = 7;
     Rectangle[][] squares = new Rectangle[3][3];
-    private boolean changePlayer = true;
     Alert alert = new Alert(Alert.AlertType.INFORMATION);
-
 
     public static void main(String[] args) {
         launch(args);
-
     }
-
-
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -53,12 +46,12 @@ public class View extends Application {
         controller.start();
         primaryStage.show();
         alert.setTitle("Winner");
-
     }
 
     private void tableView() {
         for (int x = 0; x < 3; x++) {
             for (int y = 0; y < 3; y++) {
+                int constant = 7;
                 Rectangle rectangle = new Rectangle(x * 100 + constant * x, y * 100 + constant * y, 100, 100);
                 rectangle.setFill(Color.WHITE);
                 rectangle.setOnMouseClicked(this::mouseClick);
@@ -100,7 +93,8 @@ public class View extends Application {
             }
         }
     }
-    public void message(String winner,String whoStart){
+
+    public void message(String winner, String whoStart) {
         alert.setHeaderText(winner);
         alert.setContentText(whoStart);
         alert.showAndWait();
